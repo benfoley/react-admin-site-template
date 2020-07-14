@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "yakilla-staging"
+  },
+  "targets": {
+    "yakilla-staging": {
+      "hosting": {
+        "site": [
+          "projectname-site-1234"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "yakilla-staging"
+  },
+  "targets": {
+    "yakilla-staging": {
+      "hosting": {
+        "admin": [
+          "projectname-admin-1234"
+        ]
+      }
+    }
+  }
+}
