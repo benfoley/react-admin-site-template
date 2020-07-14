@@ -66,7 +66,7 @@ cd ../../
 ```
 
 Go to Firebase > `Project settings`
-Add a "web app" and copy the firebase config details into a new file in the react project `.env`. Use the following format, capitalise keys and prefix with REACT_APP_.
+Add a "web app" and copy the firebase config details into a new file in the react project `.env`. Use the following format, capitalise keys and prefix with REACT_APP_. See `.env.example` in the demo project.
 
 ```
 REACT_APP_API_KEY=key
@@ -103,7 +103,7 @@ Add yarn deploy step to packjage.json
     "predeploy": "yarn build",
     "deploy": "firebase deploy --only hosting:admin"
 
-Add node src path to .env (this will need to change someday).
+Add node src path to `.env` (this will need to change someday).
 ```
 NODE_PATH=src/
 ```
@@ -143,7 +143,7 @@ cd projectname-site
 yarn add date-fns firebase html-react-parser react-lazyload react-linkify react-redux react-redux-firebase react-router-dom redux redux-firestore redux-thunk semantic-ui-css semantic-ui-react object-hash react-truncate 
 ```
 
-Add firebase config info and node src path to `.env` (see admin info above for details).
+Add firebase config info and node src path to `.env` (see admin info above for details, and `.env.example`).
 Exclude `envs` in `gitignore`.
 
 Add Firebase for deploying with `firebase init`
