@@ -2,12 +2,20 @@
 
 Use this as a template for react+firebase admin and public sites
 
-Demo content is in the yakilla-staging project. This may be deleted at any time if needed for Yakiilla.
+Admin site uses
+- [react-admin](https://github.com/marmelab/react-admin)
+- Fork of [react-admin-firebase](https://github.com/benwinding/react-admin-firebase)
+
+Public site uses
+- [react-redux](https://github.com/reduxjs/react-redux)
+- [react-redux-firebase](https://github.com/prescottprue/react-redux-firebase)
+
+Demo content is in the `yakilla-staging` project. This may be deleted at any time if needed for Yakilla.
 
 
 ## Domain name
 
-Register yakilla.com.au, no hosting required but do need DNS management.
+Register domain name, no hosting required but do need DNS management.
 
 Create project at Firebase.
 
