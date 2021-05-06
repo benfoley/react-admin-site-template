@@ -1,4 +1,4 @@
-# Setting up a new React+Redux+Firebase admin and public site
+# Template project for React Admin and React.js site with Firebase data
 
 Use this as a template for react+firebase admin and public sites
 
