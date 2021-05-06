@@ -11,6 +11,8 @@ Public site uses
 - [react-redux-firebase](https://github.com/prescottprue/react-redux-firebase)
 
 
+TODO: rephrase this guide to assume starting from cloning the repo. It's currently a bit half-and-half.
+
 
 ## Register domain name
 
@@ -143,7 +145,7 @@ const firebaseConfig = {
 };
 ```
 
-Paste the config into the `index.js` file.
+Paste the config into the `index.js` file, replacing what's there if using the cloned repository.
 
 ### Admin Deployment
 
@@ -181,7 +183,7 @@ Add the deploy step to `package.json` scripts block.
     "deploy": "firebase deploy --only hosting:admin"
 
 
-Create a `jsconfig.json` file with this configuration. (TODO test this, also maybe not required??)
+Create a `jsconfig.json` file with this configuration. (TODO maybe not required??)
 ```
 {
 "compilerOptions": {
