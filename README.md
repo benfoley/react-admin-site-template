@@ -10,20 +10,44 @@ Public site uses
 - [react-redux](https://github.com/reduxjs/react-redux)
 - [react-redux-firebase](https://github.com/prescottprue/react-redux-firebase)
 
-Demo content is in the `yakilla-staging` project. This may be deleted at any time if needed for Yakilla.
 
 
-## Domain name
+## Register domain name
 
-Register domain name, no hosting required but do need DNS management.
+Register the domain name the sites will use. No hosting plan is required becasue we will use Firebase hosting but will need DNS management to set up custom DNS pointing the domain to firebase. More info about this later, after we set up the Firebase hosting targets.
 
-Create project at Firebase.
 
-Add Authentication method (email). 
-Add self as user.
+## Build the admin site
 
-Add Firebase Firestore database.
-Set rules for public read and auth write.
+Set up a React project and install required modules. Replace projectname with your project name. 
+```
+cd ~/sandbox
+npx create-react-app projectname-admin
+cd projectname-admin
+yarn add firebase react-admin react-admin-firebase ra-input-rich-text validator uri-js
+```
+
+## Firebase 
+
+### New project
+
+Open the [Firebase website](https://console.firebase.google.com/), and create a project in the Firebase console. If you are already signed into Google, check that you are in the account you want to be the owner of this project.
+
+### Authentication
+
+Go to the Authentication page and add a sign-in method such as email. 
+
+Go to the Users tab and add yourself as user.
+
+### Database
+
+Go to the Firestore page and add a new database. 
+
+Start the database in production mode, we'll edit the rules in a moment to give our site access. 
+
+Set a location. Depending on the site's purpose a nearby location may give minutely faster response times.
+
+Edit the rules for public read and auth write.
 ```
 rules_version = '2';
 service cloud.firestore {
@@ -36,8 +60,12 @@ service cloud.firestore {
 }
 ```
 
-Add Firebase Storage if required.
-Set rules for read and auth write.
+Create a collection for the data to go into. Design of the database is beyond the scope of this guide. If unsure, start with `entries`.
+
+### File Storage
+
+If you want to use file storage, add Storage to the project and set the rules for read and auth write.
+
 ```
 service firebase.storage {
   match /b/{bucket}/o {
@@ -48,86 +76,147 @@ service firebase.storage {
 }
 ```
 
-Add Firebase hosting.
-Install Firebase CLI if not already installed (follow instructions when prompted during hosting setup).
-Add multiple sites for admin and public sites, 
-(eg `projectname-admin.web.app` & `projectname-site.web.app`).
+### Hosting
 
-Create custom domains for firebase sites. Requires verifying domain ownership by adding a DNS TXT record that Firebase provides, and then add A records for the domains projectname.com.au, `www.projectname.com.au` and `admin.projectname.com.au`.
+Go to the Hosting page and add hosting by clicking "Get started". 
 
+1. Install the Firebase CLI using the `npm` command given in the steps or [download an installer](https://firebase.google.com/docs/cli).
 
-
-## Build the admin site
-
-Set up project and install modules.
-```
-npx create-react-app projectname-admin
-cd projectname-admin
-yarn add firebase react-admin ra-input-rich-text validator uri-js
-```
-
-We'll use my forked version of react-admin-firebase which saves files with filenames rather than by index number.
-```
-yarn add https://github.com/benfoley/react-admin-firebase.git
-cd ./node_modules/react-admin-firebase && npm install && npm run build
-cd ../../
-```
-
-Go to Firebase > `Project settings`
-Add a "web app" and copy the firebase config details into a new file in the react project `.env`. Use the following format, capitalise keys and prefix with REACT_APP_. See `.env.example` in the demo project.
-
-```
-REACT_APP_API_KEY=key
-REACT_APP_AUTH_DOMAIN=projectname.firebaseapp.com
-REACT_APP_DATABASE_URL=https://projectname.firebaseio.com
-REACT_APP_PROJECT_ID=projectname
-REACT_APP_STORAGE_BUCKET=projectname.appspot.com
-REACT_APP_MESSAGING_SENDER_ID=id
-REACT_APP_APP_ID=1:id:web:id
-```
-
-Exclude `envs` in `gitignore`
-
-Add Firebase for deploying 
+2. Initialise the project by running these commands in terminal.   
 ```
 firebase login
+```
+
+Check that the same account is logged in on CLI as the web dashboard. If you need to change accounts, logout then log in again.
+```
+firebase logout
+```
+
+The next command will take you through some options to set up the project details.
+```
 firebase init
 ```
 
-- Choose Hosting
-- Choose use existing project
-- Use `build` as the public dir
-- Choose to make as a single page app `Yes`
+When prompted, choose the following.
+- Choose `Hosting`
+- Choose use existing project, and select the project you want.
+- What do you want to use as your public directory? `build`
+- Configure as a single-page app (rewrite all urls to /index.html)? `Yes`
+- Set up automatic builds and deploys with GitHub? `No`
+
+### Connect domain to hosting
+
+Back on the Firebase dashboard.. click Next, ignore the deploy command for now and click Continue to the console.
+
+In the Advanced section, add multiple sites for admin and public sites. Click Add another site, and add two with -admin and -site suffixes (replace projectname with your project name). The default projectname hosting will remain, it will be easier to recognise hosting targets later by using explicit names.
+
+(eg `projectname-admin.web.app` & `projectname-site.web.app`).
+
+Add custom domains for both Firebase sites.
+
+Starting with the `-admin` site, click its View button. Click the Add custom domain button and enter the domain details you want to use. 
+
+For the admin site, use `admin.mydomain.com` (replace `mydomain.com` with your domain name). Click continue, then create new `A` type DNS records in your domain's DNS management interface using the provided IP addresses and the name `admin`. If you are using Google Domains as the registrar, create one `admin A` record, then edit it to add the next IP address (two records with the same name are not allowed).
+
+Go back to the hosting dashboard, and click the View button for the `-site` hositing site. 
+
+For the non-admin site, use the main domain eg `mydomain.com`. Create default `@` DNS records in your DNS management with the provided IP addresses. In the Firebase console you will be prompted to "Would you like to add www.mydomain.com too?" Click Add, then Continue. In your DNS management, add the suggested `A` records for the www address.
+
+You may need to verify domain ownership by adding a DNS TXT record that Firebase provides.
+
+
+### Connect the admin site to Firebase
+
+Go to the Firebase dashboard `Project Overview` > `Project settings`
+
+Add a "web app" (the icon is `</>`). Give it the project name (not the admin name).
+
+Copy the firebase config details from the web app info. The details will be used to authenticate the admin site with the Firebase project.
+
+Create a new file in the react project named `.env`. 
+
+Paste the copied config details into the `.env` file.
+
+Edit the info to match the following format, capitalise the keys and prefix each key with REACT_APP_
+
+```
+REACT_APP_APIKEY=key
+REACT_APP_AUTHDOMAIN=projectname.firebaseapp.com
+REACT_APP_DATABASEURL=https://projectname.firebaseio.com
+REACT_APP_PROJECTID=projectname
+REACT_APP_STORAGEBUCKET=projectname.appspot.com
+REACT_APP_MESSAGINGSENDERID=id
+REACT_APP_APPID=1:id:web:id
+```
+
+In the react project files, edit the `.gitignore` file and add a line for `.env`. This keeps the config details out of your repository for security.
+
+
+### Admin Deployment
+
+Add a deployment method. This will be used to upload the public files to the Firebase hosting when you deploy. We'll use the CLI to set this up.
 
 Add the site as a hosting target 
 ```
 firebase target:apply hosting admin projectname-admin
 ```
 
-Edit `firebase.json`, wrap the `hosting` value in an array and add` "target": "admin"` property.
+Now, manually edit the `firebase.json` file. Add the target name `"target": "admin"`, eg:
+```
+{
+  "hosting": {
+    "target": "admin",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+```
 
-Add yarn deploy step to packjage.json
+Add the deploy step to `package.json` scripts block.
 
     "predeploy": "yarn build",
     "deploy": "firebase deploy --only hosting:admin"
 
-Add node src path to `.env` (this will need to change someday).
+
+Create a `jsconfig.json` file with this configuration. (TODO test this, also maybe not required??)
 ```
-NODE_PATH=src/
+{
+"compilerOptions": {
+"baseUrl": "src"
+},
+"include": ["src"]
+}
 ```
 
-Test with `yarn start`
+Test building the site with `yarn start`. This should generate the site locally.
 
-Deploy with `yarn deploy`
+Test deployment with `yarn deploy`. This should upload the optimised production build of the site to the hosting.
 
-Now customise site for content. 
+After deployment, check the URLs to see if it all worked.
+
+### Admin site content
+
+Now customise the admin site. Look at the template repository for explicit details for each component. 
+
 Change details in index.html, manifest.json, favicon, icons
-Delete App.css, App.test.js, logo.svg, serviceWorker.js, setupTests.js from src
-Remove serviceworker import and unregister from src/index.js
 
-Create Dashboard.js component, use material-ui/core/Card for layout
+Delete App.css, App.test.js, logo.svg, reportWebVitals.js, setupTests.js from src
 
-Create components for each collection to work with, eg Page.
+React-admin uses a Dashboard as a landing page, and groups of components based on collection names for administering the content.
+
+Create a Dashboard.js component to use as the landing page. See template example for the code.
+
+Create components for each collection to work with, eg Page. See `src/Page.js` for example code.
 
 App.js
 - Import react-admin and react-admin-firebase components
@@ -138,12 +227,12 @@ App.js
 - Add authProvider, dataProvider, dashboard as props of Admin 
 - Add Resources as children of Admin, one resource for each collection. Resource name is the name of the collection.
 
-
+If the site is not already running, test with `yarn start`
 
 
 ## Build the public site
 
-Set up project and install modules.
+Set up public site react project and install modules.
 ```
 cd ..
 npx create-react-app projectname-site
@@ -151,8 +240,8 @@ cd projectname-site
 yarn add date-fns firebase html-react-parser react-lazyload react-linkify react-redux react-redux-firebase react-router-dom redux redux-firestore redux-thunk semantic-ui-css semantic-ui-react object-hash react-truncate 
 ```
 
-Add firebase config info and node src path to `.env` (see admin info above for details, and `.env.example`).
-Exclude `envs` in `gitignore`.
+Add firebase config info and node src path to `.env` (see admin info above for details, or just copy the admin `.env` file to this project's files).
+Exclude `.env` in `gitignore`.
 
 Add Firebase for deploying with `firebase init`
 - Choose Hosting
@@ -165,23 +254,26 @@ Add the site as a hosting target
 firebase target:apply hosting site projectname-site
 ```
 
-Edit `firebase.json`, wrap the `hosting` value in an array and add` "target": "site"` property.
+Edit `firebase.json` and add the ` "target": "site"` property (see admin info above for example).
 
-Add yarn deploy step to packjage.json
+Add yarn deploy step to `package.json`
 
     "predeploy": "yarn build",
     "deploy": "firebase deploy --only hosting:site"
 
-Test with `yarn start`
+Test with `yarn start`.
 
-Deploy with `yarn deploy`
+Deploy with `yarn deploy`. The site should now be available at your domain.
 
-Now customise site for content. 
+Populate the database with at least one entry, with a name and info record
+
+### Site content 
+
+Now customise site for content. See the template files for code.
+
 Change details in index.html, manifest.json, favicon, icons
-Delete App.css, App.test.js, logo.svg, serviceWorker.js, setupTests.js from src
-Remove serviceworker import and unregister from src/index.js
 
-
+Delete App.css, App.test.js, logo.svg, reportWebVitals.js, setupTests.js from src
 
 index.js 
 - Import react-router-router BrowserRouter module
@@ -213,12 +305,9 @@ Components/Page.js
 - Get data from Firestore using query where name == ..
 
 
-## Improvements (see Yakilla for examples)
+## Improvements
 
 - Auto links in content (shouldn't be needed if using react-admin rich text)
 - List content search/ filters using selects
 - Add truncation for info content
 - Export as csv?
-
-
-
