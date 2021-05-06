@@ -4,8 +4,8 @@ import { useSelector } from "react-redux"
 import { useParams } from 'react-router-dom'
 import { Container, Icon } from 'semantic-ui-react'
 import hash from "object-hash"
-import NavBar from "Components/NavBar"
 import parse from 'html-react-parser';
+import NavBar from "./NavBar"
 
 const Page = () => {
   let { name } = useParams()

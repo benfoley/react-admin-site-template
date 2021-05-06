@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useFirestoreConnect } from "react-redux-firebase"
 import { useSelector } from "react-redux"
 import { Button, Container, Divider } from 'semantic-ui-react'
-import NavBar from "Components/NavBar"
+import NavBar from "./NavBar"
 
 const PageList = () => {
   let option = { collection: "pages" }

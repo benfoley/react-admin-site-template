@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom'
-import Home from 'Components/Home'
-import PageList from 'Components/PageList'
-import Page from 'Components/Page'
+import Home from './Components/Home'
+import PageList from './Components/PageList'
+import Page from './Components/Page'
 
 function App() {
   return (

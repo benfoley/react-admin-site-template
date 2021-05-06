@@ -125,32 +125,25 @@ For the non-admin site, use the main domain eg `mydomain.com`. Create default `@
 You may need to verify domain ownership by adding a DNS TXT record that Firebase provides.
 
 
-### Connect the admin site to Firebase
+### Connect the admin site to Firebase config
 
 Go to the Firebase dashboard `Project Overview` > `Project settings`
 
 Add a "web app" (the icon is `</>`). Give it the project name (not the admin name).
 
-Copy the firebase config details from the web app info. The details will be used to authenticate the admin site with the Firebase project.
-
-Create a new file in the react project named `.env`. 
-
-Paste the copied config details into the `.env` file.
-
-Edit the info to match the following format, capitalise the keys and prefix each key with REACT_APP_
-
+Copy the firebase config details from the web app info. The details will be used to authenticate the admin site with the Firebase project. Eg
 ```
-REACT_APP_APIKEY=key
-REACT_APP_AUTHDOMAIN=projectname.firebaseapp.com
-REACT_APP_DATABASEURL=https://projectname.firebaseio.com
-REACT_APP_PROJECTID=projectname
-REACT_APP_STORAGEBUCKET=projectname.appspot.com
-REACT_APP_MESSAGINGSENDERID=id
-REACT_APP_APPID=1:id:web:id
+const firebaseConfig = {
+  apiKey: "XXX",
+  authDomain: "projectname.firebaseapp.com",
+  projectId: "projectname",
+  storageBucket: "projectname.appspot.com",
+  messagingSenderId: "21389728731",
+  appId: "XXX"
+};
 ```
 
-In the react project files, edit the `.gitignore` file and add a line for `.env`. This keeps the config details out of your repository for security.
-
+Paste the config into the `index.js` file.
 
 ### Admin Deployment
 

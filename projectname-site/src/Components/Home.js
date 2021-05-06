@@ -1,6 +1,6 @@
 import React from "react"
 import { Container } from 'semantic-ui-react'
-import NavBar from "Components/NavBar"
+import NavBar from "./NavBar"
 
 const Home = () => {
   return (
