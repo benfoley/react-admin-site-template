@@ -146,7 +146,7 @@ const firebaseConfig = {
 };
 ```
 
-Paste the config into the `index.js` file, replacing what's there if using the cloned repository.
+Paste the config into the `src/App.js` file, replacing what's there if using the cloned repository.
 
 ### Admin Deployment
 
