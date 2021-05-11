@@ -114,9 +114,11 @@ In the Advanced section, add multiple sites for admin and public sites. Click Ad
 
 (eg `projectname-admin.web.app` & `projectname-site.web.app`).
 
-Add custom domains for both Firebase sites.
+#### Add custom domains for both Firebase sites.
 
 Starting with the `-admin` site, click its View button. Click the Add custom domain button and enter the domain details you want to use. 
+
+You may need to verify domain ownership by adding a DNS TXT record that Firebase provides.
 
 For the admin site, use `admin.mydomain.com` (replace `mydomain.com` with your domain name). Click continue, then create new `A` type DNS records in your domain's DNS management interface using the provided IP addresses and the name `admin`. If you are using Google Domains as the registrar, create one `admin A` record, then edit it to add the next IP address (two records with the same name are not allowed).
 
@@ -124,7 +126,6 @@ Go back to the hosting dashboard, and click the View button for the `-site` hosi
 
 For the non-admin site, use the main domain eg `mydomain.com`. Create default `@` DNS records in your DNS management with the provided IP addresses. In the Firebase console you will be prompted to "Would you like to add www.mydomain.com too?" Click Add, then Continue. In your DNS management, add the suggested `A` records for the www address.
 
-You may need to verify domain ownership by adding a DNS TXT record that Firebase provides.
 
 
 ### Connect the admin site to Firebase config
