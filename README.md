@@ -110,7 +110,7 @@ When prompted, choose the following.
 
 Back on the Firebase dashboard.. click Next, ignore the deploy command for now and click Continue to the console.
 
-In the Advanced section, add multiple sites for admin and public sites. Click Add another site, and add two with -admin and -site suffixes (replace projectname with your project name). The default projectname hosting will remain, it will be easier to recognise hosting targets later by using explicit names.
+In the Advanced section, add multiple sites for admin and public sites. Click Add another site, and add two sites with -admin and -site suffixes (replace projectname with your project name eg react-demo-admin and react-demo-site). The default projectname hosting will remain, it will be easier to recognise hosting targets later by using explicit names.
 
 (eg `projectname-admin.web.app` & `projectname-site.web.app`).
 
