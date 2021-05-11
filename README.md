@@ -152,7 +152,7 @@ Paste the config into the `src/App.js` file, replacing what's there if using the
 
 Add a deployment method. This will be used to upload the public files to the Firebase hosting when you deploy. We'll use the CLI to set this up.
 
-Add the site as a hosting target 
+Add the site as a hosting target by running the following command in Terminal, in the admin project.
 ```
 firebase target:apply hosting admin projectname-admin
 ```
